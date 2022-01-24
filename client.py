@@ -11,8 +11,15 @@ class Sender:
         self.client.connect((HOST, PORT))
 
     def send_data(self):
-        data = 'new_file.txt'
-        self.client.sendall(data.encode('utf-8'))
+        request_text = (
+            b'GET /index.html HTTP/1.1\r\n'
+            b'Host: cm.bell-labs.com\r\n'
+            b'Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3\r\n'
+            b'Accept: text/html;q=0.9,text/plain\r\n'
+            b'\r\n'
+        )
+
+        self.client.sendall(request_text)
         received_data = self.client.recv(1024).decode('utf-8')
         print(received_data)
 

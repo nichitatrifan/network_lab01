@@ -1,13 +1,20 @@
 import socket
 import sys
+import os
 
 
 def handle_client(client_socket, addr):
-    file_name = client_socket.recv(1024).decode('utf-8')
-    print('Received file name: ' + str(file_name))
+    request = client_socket.recv(1024).decode('utf-8')
+    headers = request.split('\n')
+    get_resource = headers[0].split(' ')[1]
+    resource_path = os.path.abspath(os.getcwd()).replace('\\','/') + get_resource 
+    print(headers[0])
+    print('trying to get: ' + str(get_resource))
+    print('resource path: ' + str(resource_path))
+    
     response = 'Accepted'
     client_socket.sendall(response.encode('utf-8'))
-
+    
 
 if __name__ == '__main__':
     HOST, PORT = 'localhost', 8080
